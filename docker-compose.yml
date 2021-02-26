@@ -1,0 +1,29 @@
+version: '3.2'
+services:
+  api:
+    build: .
+    command: sh -c "yarn && yarn start:dev"
+    environment:
+      NODE_ENV: development
+      #DB
+      POSTGRES_HOST: db
+      POSTGRES_DB: wtp
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_PORT: 5432
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - ~/.config:/root/.config
+      - /node_modules
+    ports:
+      - '3001:3001'
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: wtp
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
