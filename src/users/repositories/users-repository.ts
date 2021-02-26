@@ -1,15 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 // import { UpdateUserDto } from '../dto/update-user.dto';
-import { Users } from '../entities/user.entity';
+import { Users } from '../../database/entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 let users: Users[] = [];
 
 @Injectable()
 export class UsersRepository {
+  constructor(
+    @InjectRepository(Users)
+    private usersRepository: Repository<Users>,
+  ) {}
+
   create(createUserDto: CreateUserDto): Users {
-    users.push(createUserDto);
-    return createUserDto;
+    const user: Users = this.usersRepository.create(createUserDto);
+    return user;
   }
 
   findAll(): Users[] {
