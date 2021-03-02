@@ -1,15 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersRepository } from './repositories/users-repository';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { userValid } from './mocks/users.mocks';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Users } from 'src/database/entities/user.entity';
-import { Repository } from 'typeorm';
+import { Users } from '../database/entities/user.entity';
+
+const mockTypeorm = {
+  find: jest.fn(),
+  findOne: jest.fn(),
+  save: jest.fn(),
+  delete: jest.fn(),
+};
 
 describe('UsersController', () => {
   let controller: UsersController;
-  let repositories: UsersRepository;
 
   const token = getRepositoryToken(Users);
   beforeEach(async () => {
@@ -17,16 +21,14 @@ describe('UsersController', () => {
       controllers: [UsersController],
       providers: [
         UsersService,
-        UsersRepository,
         {
           provide: token,
-          useClass: Repository,
+          useValue: mockTypeorm,
         },
       ],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
-    repositories = module.get<UsersRepository>(UsersRepository);
   });
 
   it('should be defined', () => {
@@ -34,34 +36,34 @@ describe('UsersController', () => {
   });
 
   describe('check create user', () => {
-    it('return 201 create user', () => {
+    it('return 201 create user', async () => {
       const userMock = userValid();
-      jest.spyOn(repositories, 'create').mockReturnValue(userMock);
-      expect(controller.create(userMock)).toStrictEqual(userMock);
+      mockTypeorm.save.mockReturnValue(userMock);
+      expect(await controller.create(userMock)).toStrictEqual(userMock);
     });
   });
 
   describe('check find All users', () => {
-    it('return 201 create user', () => {
+    it('return 200 find all users', async () => {
       const userMock = userValid();
-      jest.spyOn(repositories, 'findAll').mockReturnValue([userMock, userMock]);
-      expect(controller.findAll()).toStrictEqual([userMock, userMock]);
+      mockTypeorm.find.mockReturnValue([userMock, userMock]);
+      expect(await controller.findAll()).toStrictEqual([userMock, userMock]);
     });
   });
 
   describe('check findOneByEmail user', () => {
-    it('return 201 create user', () => {
+    it('return 201 create user', async () => {
       const userMock = userValid();
-      jest.spyOn(repositories, 'findOneByEmail').mockReturnValue(userMock);
-      expect(controller.findOne(userMock.email)).toStrictEqual(userMock);
+      mockTypeorm.findOne.mockReturnValue(userMock);
+      expect(await controller.findOne(userMock.email)).toStrictEqual(userMock);
     });
   });
 
   describe('check delete user', () => {
-    it('return 201 create user', () => {
+    it('return 201 create user', async () => {
       const userMock = userValid();
-      jest.spyOn(repositories, 'remove').mockReturnValue(true);
-      expect(controller.remove(userMock.email)).toStrictEqual(
+      mockTypeorm.delete.mockReturnValue(true);
+      expect(await controller.remove(userMock.email)).toStrictEqual(
         'usuário deletado',
       );
     });

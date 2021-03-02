@@ -1,30 +1,36 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Users } from '../database/entities/user.entity';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 // import { UpdateUserDto } from './dto/update-user.dto';
-import { UsersRepository } from './repositories/users-repository';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(
+    @InjectRepository(Users)
+    private userRepository: Repository<Users>,
+  ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.usersRepository.create(createUserDto);
+  async create(createUserDto: CreateUserDto) {
+    console.log('create');
+    return await this.userRepository.save(createUserDto);
   }
 
-  findAll() {
-    return this.usersRepository.findAll();
+  async findAll() {
+    return await this.userRepository.find();
   }
 
-  findOneByEmail(email: string) {
-    return this.usersRepository.findOneByEmail(email);
+  async findOneByEmail(email: string) {
+    return await this.userRepository.findOne({ where: { email } });
   }
 
   // update(id: number, updateUserDto: UpdateUserDto) {
   //   return `This action updates a #${id} user`;
   // }
 
-  remove(email: string) {
-    const isdelete = this.usersRepository.remove(email);
+  async remove(email: string) {
+    const isdelete = await this.userRepository.delete({ email });
     if (!isdelete) {
       throw new NotFoundException('Usuário não foi encontrado');
     }

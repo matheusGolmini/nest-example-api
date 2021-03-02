@@ -10,7 +10,6 @@ module.exports = {
   migrationsTableName: 'migrations',
   entities: ['src/**/*.entity{.ts,.js}'],
   migrations: ['src/database/migrations/*{.ts,.js}'],
-  entityPrefix: 'wtp_',
   cli: {
     migrationsDir: 'src/database/migrations',
   },

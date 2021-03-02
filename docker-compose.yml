@@ -7,8 +7,8 @@ services:
       NODE_ENV: development
       #DB
       POSTGRES_HOST: db
-      POSTGRES_DB: wtp
-      POSTGRES_USER: root
+      POSTGRES_DB: faculdade
+      POSTGRES_USER: faculdade
       POSTGRES_PASSWORD: password
       POSTGRES_PORT: 5432
     depends_on:
@@ -22,8 +22,8 @@ services:
   db:
     image: postgres:latest
     environment:
-      POSTGRES_DB: wtp
-      POSTGRES_USER: root
+      POSTGRES_DB: faculdade
+      POSTGRES_USER: faculdade
       POSTGRES_PASSWORD: password
     ports:
       - 5432:5432
