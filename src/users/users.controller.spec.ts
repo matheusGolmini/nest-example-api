@@ -52,29 +52,28 @@ describe('UsersController', () => {
   });
 
   describe('check findOneByEmail user', () => {
-    it('return 200 find by email', async () => {
+    it('return 200 find by id', async () => {
       const userMock = userValid();
       mockTypeorm.findOne.mockReturnValue(userMock);
-      expect(await controller.findOne(userMock.email)).toStrictEqual(userMock);
+      expect(await controller.findOne(userMock.id)).toStrictEqual(userMock);
     });
   });
 
   describe('check delete user', () => {
     it('return 200 delete user', async () => {
       const userMock = userValid();
-      mockTypeorm.delete.mockReturnValue(true);
-      expect(await controller.remove(userMock.email)).toStrictEqual(
+      mockTypeorm.delete.mockReturnValue({ raw: [], affected: 1 });
+      expect(await controller.remove(userMock.id)).toStrictEqual(
         'usuário deletado',
       );
     });
 
     it('return throw new NotFoundException', async () => {
       const userMock = userValid();
-      mockTypeorm.delete.mockReturnValue(false);
+      mockTypeorm.delete.mockReturnValue({ raw: [], affected: 0 });
       try {
-        await controller.remove(userMock.email);
+        await controller.remove(userMock.id);
       } catch (error) {
-        console.log(error);
         expect(error.message).toStrictEqual('Usuário não foi encontrado');
         expect(error.status).toEqual(404);
       }

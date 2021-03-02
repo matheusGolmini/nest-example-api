@@ -27,8 +27,8 @@ export class UsersController {
     return await this.usersService.findAll();
   }
 
-  @Get(':email')
-  async findOne(@Param('email') email: string) {
+  @Get(':id')
+  async findOne(@Param('id') email: string) {
     return await this.usersService.findOneByEmail(email);
   }
 
@@ -37,8 +37,8 @@ export class UsersController {
   //   return this.usersService.update(+id, updateUserDto);
   // }
 
-  @Delete(':email')
-  async remove(@Param('email') email: string) {
-    return await this.usersService.remove(email);
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return await this.usersService.remove(id);
   }
 }

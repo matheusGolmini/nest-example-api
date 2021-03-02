@@ -13,7 +13,6 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    console.log('create');
     return await this.userRepository.save(createUserDto);
   }
 
@@ -21,17 +20,17 @@ export class UsersService {
     return await this.userRepository.find();
   }
 
-  async findOneByEmail(email: string) {
-    return await this.userRepository.findOne({ where: { email } });
+  async findOneByEmail(id: string) {
+    return await this.userRepository.findOne({ where: { id } });
   }
 
   // update(id: number, updateUserDto: UpdateUserDto) {
   //   return `This action updates a #${id} user`;
   // }
 
-  async remove(email: string) {
-    const isdelete = await this.userRepository.delete({ email });
-    if (!isdelete) {
+  async remove(id: string) {
+    const isDeleted = await this.userRepository.delete({ id });
+    if (!isDeleted.affected) {
       throw new NotFoundException('Usuário não foi encontrado');
     }
     return 'usuário deletado';
