@@ -9,5 +9,6 @@ import { configDatabase } from './database/config.data';
   imports: [UsersModule, TypeOrmModule.forRoot(configDatabase)],
   controllers: [AppController],
   providers: [AppService],
+
 })
 export class AppModule {}
