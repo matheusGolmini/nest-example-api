@@ -6,10 +6,10 @@ services:
     environment:
       NODE_ENV: development
       #DB
-      POSTGRES_HOST: db
-      POSTGRES_DB: faculdade
-      POSTGRES_USER: faculdade
-      POSTGRES_PASSWORD: password
+      POSTGRES_HOST: ec2-34-230-167-186.compute-1.amazonaws.com
+      POSTGRES_DB: dckva9deao69ph
+      POSTGRES_USER: yafklrdtmacdlf
+      POSTGRES_PASSWORD: 25e8fdce3b91d2bd35bffb5e8b2afcc02f1c132c5b30c16e41d0e4f066f661e7
       POSTGRES_PORT: 5432
     depends_on:
       - db
@@ -22,8 +22,6 @@ services:
   db:
     image: postgres:latest
     environment:
-      POSTGRES_DB: faculdade
-      POSTGRES_USER: faculdade
-      POSTGRES_PASSWORD: password
+      POSTGRES_HOST: ec2-34-230-167-186.compute-1.amazonaws.com
     ports:
       - 5432:5432

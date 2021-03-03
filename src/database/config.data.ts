@@ -9,6 +9,9 @@ const configDatabase: TypeOrmModuleOptions = {
   password: process.env.POSTGRES_PASSWORD,
   database: process.env.POSTGRES_DB,
   synchronize: false,
+  ssl: {
+    rejectUnauthorized: false,
+  },
   entities: [resolve(__dirname, '..', '..') + '/**/*.entity{.ts,.js}'],
   logging: process.env.NODE_ENV == 'development' ? ['query', 'schema'] : [],
 };
