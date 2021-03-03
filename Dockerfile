@@ -2,11 +2,9 @@ FROM node:14-alpine
 
 WORKDIR /app
 
-COPY --chown=node:node . /app
+COPY . /app
 
 RUN apk add --no-cache bash && npm install -g @nestjs/cli && apk add git && rm -rf /var/cache/apk/*
-
-USER node
 
 EXPOSE 3001
 
